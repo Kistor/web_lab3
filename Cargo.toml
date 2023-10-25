@@ -1,0 +1,21 @@
+[package]
+name = "lab3"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.75"
+chrono = { version = "0.4.31", features = ["serde"] }
+sea-orm = { version = "0.12.3", features = ["runtime-tokio-native-tls", "with-chrono", "with-uuid", "postgres-array", "sqlx-postgres"] }
+sea-orm-migration = "0.12.3"
+sea-query = { version = "0.30.2", default-features = false, features = [
+    "backend-postgres",
+    "derive",
+    "thread-safe",
+    "with-chrono",
+    "with-uuid",
+] }
+
+uuid = { version = "1.4.1", features = ["serde", "v4"] }
