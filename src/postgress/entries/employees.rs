@@ -1,4 +1,4 @@
-use crate::entries::employee::Employee;
+use crate::entries::employee::{Employee, EmployeeData};
 use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel)]
@@ -10,6 +10,7 @@ pub struct Model {
     pub second_name: String,
     pub surname: String,
     pub email: String,
+    pub is_manager: bool,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
@@ -21,10 +22,13 @@ impl From<Model> for Employee {
     fn from(value: Model) -> Self {
         Self {
             id: value.id,
-            name: value.name,
-            second_name: value.second_name,
-            surname: value.surname,
-            email: value.email,
+            data: EmployeeData {
+                name: value.name,
+                second_name: value.second_name,
+                surname: value.surname,
+                email: value.email,
+                is_manager: value.is_manager,
+            },
         }
     }
 }

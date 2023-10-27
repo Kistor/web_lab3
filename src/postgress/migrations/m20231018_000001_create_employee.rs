@@ -20,6 +20,7 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Employee::SecondName).string())
                     .col(ColumnDef::new(Employee::Surname).string())
                     .col(ColumnDef::new(Employee::Email).string())
+                    .col(ColumnDef::new(Employee::IsManager).boolean().default(false))
                     .to_owned(),
             )
             .await
@@ -41,4 +42,5 @@ pub enum Employee {
     SecondName,
     Surname,
     Email,
+    IsManager,
 }
