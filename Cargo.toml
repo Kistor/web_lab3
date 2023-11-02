@@ -9,6 +9,7 @@ edition = "2021"
 anyhow = "1.0.75"
 axum = { version = "0.6.20", features = ["ws", "tracing"] }
 chrono = { version = "0.4.31", features = ["serde"] }
+log = "0.4.20"
 sea-orm = { version = "0.12.3", features = ["runtime-tokio-native-tls", "with-chrono", "with-uuid", "postgres-array", "sqlx-postgres"] }
 sea-orm-migration = "0.12.3"
 sea-query = { version = "0.30.2", default-features = false, features = [

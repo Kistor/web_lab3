@@ -1052,6 +1052,7 @@ dependencies = [
  "anyhow",
  "axum",
  "chrono",
+ "log",
  "sea-orm",
  "sea-orm-migration",
  "sea-query",

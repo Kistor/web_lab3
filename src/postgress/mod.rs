@@ -27,6 +27,17 @@ pub struct Postgress {
 }
 
 impl Postgress {
+    pub async fn new(postgresql: String) {
+        let db = Database::connect(postgresql)
+            .await
+            .unwrap_or_else(|err| panic!("Не удалось подключиться к Postgresql: {err}"));
+
+        Migrator::up(&db, None)
+            .await
+            .unwrap_or_else(|err| panic!("Не удалось провести миграции хранилища: {err}"));
+        unsafe { PG = Some(Postgress { db: db }) }
+    }
+
     pub async fn try_create_project(&self, progect: Progect) -> Result<()> {
         // проверка, что такое сотрудники существуют
         for id in progect.employee_id.clone() {
@@ -70,17 +81,6 @@ impl Postgress {
         self.remote_employee(uuid).await
     }
 
-    pub async fn new(postgresql: String) {
-        let db = Database::connect(postgresql)
-            .await
-            .unwrap_or_else(|err| panic!("Не удалось подключиться к Postgresql: {err}"));
-
-        Migrator::up(&db, None)
-            .await
-            .unwrap_or_else(|err| panic!("Не удалось провести миграции хранилища: {err}"));
-        unsafe { PG = Some(Postgress { db: db }) }
-    }
-
     pub async fn get_employee(&self, id: Uuid) -> Result<Employee> {
         let employee: Employee = entries::Employees::find_by_id(id)
             .one(&self.db)
@@ -91,9 +91,15 @@ impl Postgress {
         Ok(employee)
     }
 
-    // pub async fn get_all_emplotee(&self) -> Result<Vec<Employee>> {
-    //     let employee: Employee = entries::Employees::find().all(&self.db).await?
-    // }
+    pub async fn get_all_employee(&self) -> Result<Vec<Employee>> {
+        let employees: Vec<Employee> = entries::Employees::find()
+            .all(&self.db)
+            .await?
+            .into_iter()
+            .map(|model| model.into())
+            .collect();
+        Ok(employees)
+    }
 
     pub async fn create_employee(&self, empluyee: Employee) -> Result<()> {
         let model = entries::employees::ActiveModel {

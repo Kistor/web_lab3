@@ -1,10 +1,11 @@
 use axum::{
     extract,
-    routing::{delete, post},
+    routing::{delete, get, post},
     Json, Router,
 };
 use serde::Deserialize;
 use serde_json::Value;
+use uuid::Uuid;
 
 use crate::{
     entries::employee::{Employee, EmployeeData},
@@ -15,6 +16,8 @@ pub fn router() -> Router {
     Router::new()
         .route("/new", post(new_employee))
         .route("/remote", delete(remote_employee))
+        .route("/:id", get(one).patch(update))
+        .route("/", get(get_all))
 }
 
 pub async fn new_employee(extract::Json(data): extract::Json<EmployeeData>) -> Json<Value> {
@@ -41,4 +44,26 @@ pub async fn remote_employee(
     extract::Json(RemoteEmployee { id }): extract::Json<RemoteEmployee>,
 ) -> Json<Value> {
     super::utils::response(unsafe { PG.clone().unwrap().try_remove_employee(id) }.await)
+}
+
+// pub async fn update_employee()
+pub async fn get_all() -> Json<Value> {
+    super::utils::response(unsafe { PG.clone().unwrap().get_all_employee().await })
+}
+
+pub async fn one(extract::Path(id): extract::Path<Uuid>) -> Json<Value> {
+    super::utils::response(unsafe { PG.clone().unwrap().get_employee(id).await })
+}
+
+// pub async fn update_employee()
+pub async fn update(
+    extract::Path(id): extract::Path<Uuid>,
+    extract::Json(data): extract::Json<EmployeeData>,
+) -> Json<Value> {
+    super::utils::response(unsafe {
+        PG.clone()
+            .unwrap()
+            .update_employee(Employee { id, data })
+            .await
+    })
 }

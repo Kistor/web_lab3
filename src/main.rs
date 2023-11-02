@@ -2,6 +2,7 @@ mod config;
 mod entries;
 mod http;
 mod postgress;
+use log::*;
 
 use std::{
     env,
@@ -14,18 +15,42 @@ use postgress::Postgress;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let args: Vec<String> = env::args().collect();
-    let config = Config::from_file(&args[0])?;
+    let args = std::env::args().collect::<Vec<_>>();
 
-    Postgress::new(config.postgress).await;
+    let Some(config_path) = args.get(1) else {
+        help();
+        std::process::exit(1);
+    };
 
-    let app = Router::new().nest("/employee", http::router());
+    let config = load_config(config_path);
 
-    let addr = SocketAddr::V4(SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, config.port));
+    Postgress::new(config.postgres).await;
+
+    let app = Router::new().nest("/", http::router());
+
+    let addr = SocketAddr::V4(SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, 43834));
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
         .await
         .unwrap_or_else(|err| panic!("{err}"));
 
     Ok(())
+}
+
+fn help() {
+    info!("Usage: fine [config_path]");
+}
+
+fn load_config(config_path: &str) -> config::Config {
+    use std::result::Result::Ok;
+    match config::Config::from_file(config_path) {
+        Ok(config) => {
+            debug!("Loaded config {config:#?}");
+            config
+        }
+        Err(e) => {
+            error!("Failed to load config from `{config_path}`. Error: {e}");
+            std::process::exit(1);
+        }
+    }
 }
