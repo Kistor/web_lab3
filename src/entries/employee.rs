@@ -5,6 +5,7 @@ use uuid::Uuid;
 #[serde(rename_all = "camelCase")]
 pub struct Employee {
     pub id: Uuid,
+    #[serde(flatten)]
     pub data: EmployeeData,
 }
 

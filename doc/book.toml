@@ -1,0 +1,6 @@
+[book]
+authors = ["Брескун"]
+language = "en"
+multilingual = false
+src = "src"
+title = "lab doc"

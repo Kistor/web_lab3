@@ -28,7 +28,7 @@ async fn main() -> anyhow::Result<()> {
 
     let app = Router::new().nest("/", http::router());
 
-    let addr = SocketAddr::V4(SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, 43834));
+    let addr = SocketAddr::V4(SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, config.port));
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
         .await
@@ -42,7 +42,6 @@ fn help() {
 }
 
 fn load_config(config_path: &str) -> config::Config {
-    use std::result::Result::Ok;
     match config::Config::from_file(config_path) {
         Ok(config) => {
             debug!("Loaded config {config:#?}");
