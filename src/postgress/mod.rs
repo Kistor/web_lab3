@@ -1,5 +1,5 @@
 use crate::entries::employee::Employee;
-use crate::entries::projects::Progect;
+use crate::entries::projects::Project;
 use anyhow::anyhow;
 use anyhow::Result;
 use sea_orm::ActiveValue;
@@ -38,24 +38,24 @@ impl Postgress {
         unsafe { PG = Some(Postgress { db: db }) }
     }
 
-    pub async fn try_create_project(&self, progect: Progect) -> Result<()> {
+    pub async fn try_create_project(&self, progect: Project) -> Result<()> {
         // проверка, что такое сотрудники существуют
-        for id in progect.employee_id.clone() {
+        for id in progect.data.employee_id.clone() {
             self.get_employee(id).await?;
         }
-        for id in progect.employee_lid_id.clone() {
+        for id in progect.data.employee_lid_id.clone() {
             self.get_employee(id).await?;
         }
 
         self.create_project(progect).await
     }
 
-    pub async fn try_update_project(&self, progect: Progect) -> Result<()> {
+    pub async fn try_update_project(&self, progect: Project) -> Result<()> {
         // проверка, что такое сотрудники существуют
-        for id in progect.employee_id.clone() {
+        for id in progect.data.employee_id.clone() {
             self.get_employee(id).await?;
         }
-        for id in progect.employee_lid_id.clone() {
+        for id in progect.data.employee_lid_id.clone() {
             self.get_employee(id).await?;
         }
 
@@ -99,6 +99,16 @@ impl Postgress {
             .map(|model| model.into())
             .collect();
         Ok(employees)
+    }
+
+    pub async fn get_all_projects(&self) -> Result<Vec<Project>> {
+        let progects: Vec<Project> = entries::Progects::find()
+            .all(&self.db)
+            .await?
+            .into_iter()
+            .map(|model| model.into())
+            .collect();
+        Ok(progects)
     }
 
     pub async fn create_employee(&self, empluyee: Employee) -> Result<()> {
@@ -147,24 +157,24 @@ impl Postgress {
         Ok(())
     }
 
-    pub async fn create_project(&self, progect: Progect) -> Result<()> {
+    pub async fn create_project(&self, progect: Project) -> Result<()> {
         let model = entries::progect::ActiveModel {
             id: ActiveValue::Set(progect.id),
-            name_customer: ActiveValue::Set(progect.name_customer),
-            name_performer: ActiveValue::Set(progect.name_performer),
-            employee_id: ActiveValue::Set(progect.employee_id),
-            employee_lid_id: ActiveValue::Set(progect.employee_lid_id),
-            performers: ActiveValue::Set(progect.performers),
-            date_start: ActiveValue::Set(progect.date_start),
-            date_end: ActiveValue::Set(progect.date_end),
+            name_customer: ActiveValue::Set(progect.data.name_customer),
+            name_performer: ActiveValue::Set(progect.data.name_performer),
+            employee_id: ActiveValue::Set(progect.data.employee_id),
+            employee_lid_id: ActiveValue::Set(progect.data.employee_lid_id),
+            performers: ActiveValue::Set(progect.data.performers),
+            date_start: ActiveValue::Set(progect.data.date_start),
+            date_end: ActiveValue::Set(progect.data.date_end),
         };
 
         _ = entries::Progects::insert(model).exec(&self.db).await?;
         Ok(())
     }
 
-    pub async fn get_project(&self, id: Uuid) -> Result<Progect> {
-        let progect: Progect = entries::Progects::find_by_id(id)
+    pub async fn get_project(&self, id: Uuid) -> Result<Project> {
+        let progect: Project = entries::Progects::find_by_id(id)
             .one(&self.db)
             .await?
             .ok_or(anyhow!("Сотрудник {id} не найден"))?
@@ -173,16 +183,16 @@ impl Postgress {
         Ok(progect)
     }
 
-    pub async fn update_project(&self, progect: Progect) -> Result<()> {
+    pub async fn update_project(&self, progect: Project) -> Result<()> {
         let model = entries::progect::ActiveModel {
             id: ActiveValue::Set(progect.id),
-            name_customer: ActiveValue::Set(progect.name_customer),
-            name_performer: ActiveValue::Set(progect.name_performer),
-            employee_id: ActiveValue::Set(progect.employee_id),
-            employee_lid_id: ActiveValue::Set(progect.employee_lid_id),
-            performers: ActiveValue::Set(progect.performers),
-            date_start: ActiveValue::Set(progect.date_start),
-            date_end: ActiveValue::Set(progect.date_end),
+            name_customer: ActiveValue::Set(progect.data.name_customer),
+            name_performer: ActiveValue::Set(progect.data.name_performer),
+            employee_id: ActiveValue::Set(progect.data.employee_id),
+            employee_lid_id: ActiveValue::Set(progect.data.employee_lid_id),
+            performers: ActiveValue::Set(progect.data.performers),
+            date_start: ActiveValue::Set(progect.data.date_start),
+            date_end: ActiveValue::Set(progect.data.date_end),
         };
 
         _ = entries::Progects::update(model).exec(&self.db).await?;

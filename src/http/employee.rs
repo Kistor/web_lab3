@@ -46,7 +46,6 @@ pub async fn remote_employee(
     super::utils::response(unsafe { PG.clone().unwrap().try_remove_employee(id) }.await)
 }
 
-// pub async fn update_employee()
 pub async fn get_all() -> Json<Value> {
     super::utils::response(unsafe { PG.clone().unwrap().get_all_employee().await })
 }
@@ -55,7 +54,6 @@ pub async fn one(extract::Path(id): extract::Path<Uuid>) -> Json<Value> {
     super::utils::response(unsafe { PG.clone().unwrap().get_employee(id).await })
 }
 
-// pub async fn update_employee()
 pub async fn update(
     extract::Path(id): extract::Path<Uuid>,
     extract::Json(data): extract::Json<EmployeeData>,

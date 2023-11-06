@@ -4,10 +4,7 @@ mod http;
 mod postgress;
 use log::*;
 
-use std::{
-    env,
-    net::{Ipv4Addr, SocketAddr, SocketAddrV4},
-};
+use std::net::{Ipv4Addr, SocketAddr, SocketAddrV4};
 
 use axum::routing::Router;
 use config::Config;
@@ -42,7 +39,7 @@ fn help() {
 }
 
 fn load_config(config_path: &str) -> config::Config {
-    match config::Config::from_file(config_path) {
+    match Config::from_file(config_path) {
         Ok(config) => {
             debug!("Loaded config {config:#?}");
             config

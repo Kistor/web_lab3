@@ -1,8 +1,17 @@
+use ::serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
 use uuid::Uuid;
 
-pub struct Progect {
+#[derive(Debug, Deserialize, Serialize)]
+
+pub struct Project {
     pub id: Uuid,
+    #[serde(flatten)]
+    pub data: ProjectData,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct ProjectData {
     pub name_customer: String,
     pub name_performer: String,
     pub employee_id: Vec<Uuid>,

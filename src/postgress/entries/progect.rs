@@ -1,4 +1,4 @@
-use crate::entries::projects::Progect;
+use crate::entries::projects::{Project, ProjectData};
 use chrono::{DateTime, Utc};
 use sea_orm::entity::prelude::*;
 
@@ -21,17 +21,19 @@ pub enum Relation {}
 
 impl ActiveModelBehavior for ActiveModel {}
 
-impl From<Model> for Progect {
+impl From<Model> for Project {
     fn from(value: Model) -> Self {
         Self {
             id: value.id,
-            name_customer: value.name_customer,
-            name_performer: value.name_performer,
-            employee_id: value.employee_id,
-            employee_lid_id: value.employee_lid_id,
-            performers: value.performers,
-            date_start: value.date_start,
-            date_end: value.date_end,
+            data: ProjectData {
+                name_customer: value.name_customer,
+                name_performer: value.name_performer,
+                employee_id: value.employee_id,
+                employee_lid_id: value.employee_lid_id,
+                performers: value.performers,
+                date_start: value.date_start,
+                date_end: value.date_end,
+            },
         }
     }
 }
