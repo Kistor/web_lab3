@@ -22,7 +22,7 @@ pub async fn new_project(extract::Json(data): extract::Json<ProjectData>) -> Jso
         data: data,
     };
 
-    super::utils::response(unsafe { PG.clone().unwrap().create_project(project) }.await)
+    super::utils::response(unsafe { PG.clone().unwrap().try_create_project(project) }.await)
 }
 
 #[derive(Debug, Deserialize)]
@@ -50,7 +50,7 @@ pub async fn update(
     super::utils::response(unsafe {
         PG.clone()
             .unwrap()
-            .update_project(Project { id, data })
+            .try_update_project(Project { id, data })
             .await
     })
 }

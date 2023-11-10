@@ -2,6 +2,7 @@ use crate::entries::employee::Employee;
 use crate::entries::projects::Project;
 use anyhow::anyhow;
 use anyhow::Result;
+use chrono::NaiveDate;
 use sea_orm::ActiveValue;
 use sea_orm::ColumnTrait;
 use sea_orm::DbErr;
@@ -64,20 +65,14 @@ impl Postgress {
 
     pub async fn try_remove_employee(&self, uuid: Uuid) -> Result<()> {
         //UPDATE `Progects` SET array_remove(employee_id, <тут uuid>)
-        let t = entries::Progects::update_many()
+        entries::Progects::update_many()
             .col_expr(
-                entries::progect::Column::EmployeeId,
+                entries::progects::Column::EmployeeId,
                 Expr::cust(format!("array_remove(employee_id, '{}')", uuid.to_string())),
             )
-            .filter(Expr::cust(format!(
-                "array_contains(employee_id, '{}')",
-                uuid.to_string()
-            )));
+            .exec(&self.db)
+            .await?;
 
-        println!(
-            "{}",
-            t.build(sea_orm::DatabaseBackend::Postgres).to_string()
-        );
         self.remote_employee(uuid).await
     }
 
@@ -158,15 +153,15 @@ impl Postgress {
     }
 
     pub async fn create_project(&self, progect: Project) -> Result<()> {
-        let model = entries::progect::ActiveModel {
+        let model = entries::progects::ActiveModel {
             id: ActiveValue::Set(progect.id),
             name_customer: ActiveValue::Set(progect.data.name_customer),
             name_performer: ActiveValue::Set(progect.data.name_performer),
             employee_id: ActiveValue::Set(progect.data.employee_id),
             employee_lid_id: ActiveValue::Set(progect.data.employee_lid_id),
             performers: ActiveValue::Set(progect.data.performers),
-            date_start: ActiveValue::Set(progect.data.date_start),
-            date_end: ActiveValue::Set(progect.data.date_end),
+            date_start: ActiveValue::Set(progect.data.date_start.naive_utc()),
+            date_end: ActiveValue::Set(progect.data.date_end.naive_utc()),
         };
 
         _ = entries::Progects::insert(model).exec(&self.db).await?;
@@ -184,15 +179,15 @@ impl Postgress {
     }
 
     pub async fn update_project(&self, progect: Project) -> Result<()> {
-        let model = entries::progect::ActiveModel {
+        let model = entries::progects::ActiveModel {
             id: ActiveValue::Set(progect.id),
             name_customer: ActiveValue::Set(progect.data.name_customer),
             name_performer: ActiveValue::Set(progect.data.name_performer),
             employee_id: ActiveValue::Set(progect.data.employee_id),
             employee_lid_id: ActiveValue::Set(progect.data.employee_lid_id),
             performers: ActiveValue::Set(progect.data.performers),
-            date_start: ActiveValue::Set(progect.data.date_start),
-            date_end: ActiveValue::Set(progect.data.date_end),
+            date_start: ActiveValue::Set(progect.data.date_start.naive_utc()),
+            date_end: ActiveValue::Set(progect.data.date_end.naive_utc()),
         };
 
         _ = entries::Progects::update(model).exec(&self.db).await?;
@@ -205,7 +200,7 @@ impl Postgress {
             .transaction::<_, _, DbErr>(|txn| {
                 Box::pin(async move {
                     entries::Progects::delete_many()
-                        .filter(entries::progect::Column::Id.eq(id))
+                        .filter(entries::progects::Column::Id.eq(id))
                         .exec(txn)
                         .await?;
 

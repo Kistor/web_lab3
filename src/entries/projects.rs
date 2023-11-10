@@ -1,9 +1,9 @@
 use ::serde::{Deserialize, Serialize};
-use chrono::{DateTime, Utc};
+use chrono::{serde::ts_milliseconds, DateTime, Utc};
 use uuid::Uuid;
 
 #[derive(Debug, Deserialize, Serialize)]
-
+#[serde(rename_all = "camelCase")]
 pub struct Project {
     pub id: Uuid,
     #[serde(flatten)]
@@ -11,12 +11,15 @@ pub struct Project {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ProjectData {
     pub name_customer: String,
     pub name_performer: String,
     pub employee_id: Vec<Uuid>,
     pub employee_lid_id: Vec<Uuid>,
     pub performers: Uuid,
+    #[serde(with = "ts_milliseconds")]
     pub date_start: DateTime<Utc>,
+    #[serde(with = "ts_milliseconds")]
     pub date_end: DateTime<Utc>,
 }

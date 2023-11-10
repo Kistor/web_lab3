@@ -1,5 +1,5 @@
 pub mod employees;
-pub mod progect;
+pub mod progects;
 
 pub use employees::Entity as Employees;
-pub use progect::Entity as Progects;
+pub use progects::Entity as Progects;

@@ -14,29 +14,29 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(Project::Table)
-                    .col(ColumnDef::new(Project::Id).uuid().not_null().primary_key())
-                    .col(ColumnDef::new(Project::NameCustomer).string())
-                    .col(ColumnDef::new(Project::NamePerformer).string())
+                    .table(Projects::Table)
+                    .col(ColumnDef::new(Projects::Id).uuid().not_null().primary_key())
+                    .col(ColumnDef::new(Projects::NameCustomer).string())
+                    .col(ColumnDef::new(Projects::NamePerformer).string())
                     .col(
-                        ColumnDef::new(Project::EmployeeId)
+                        ColumnDef::new(Projects::EmployeeId)
                             .array(ColumnType::Uuid)
                             .not_null(),
                     )
                     .col(
-                        ColumnDef::new(Project::EmployeeLidId)
+                        ColumnDef::new(Projects::EmployeeLidId)
                             .array(ColumnType::Uuid)
                             .not_null(),
                     )
-                    .col(ColumnDef::new(Project::Performers).uuid().not_null())
+                    .col(ColumnDef::new(Projects::Performers).uuid().not_null())
                     .col(
-                        ColumnDef::new(Project::DateStart)
+                        ColumnDef::new(Projects::DateStart)
                             .date_time()
                             .not_null()
                             .extra("DEFAULT CURRENT_TIMESTAMP".to_owned()),
                     )
                     .col(
-                        ColumnDef::new(Project::DateEnd)
+                        ColumnDef::new(Projects::DateEnd)
                             .date_time()
                             .not_null()
                             .extra("DEFAULT CURRENT_TIMESTAMP".to_owned()),
@@ -48,13 +48,13 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(Project::Table).to_owned())
+            .drop_table(Table::drop().table(Projects::Table).to_owned())
             .await
     }
 }
 
 #[derive(Iden)]
-pub enum Project {
+pub enum Projects {
     Table,
     Id,
     NameCustomer,
