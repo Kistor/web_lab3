@@ -162,6 +162,8 @@ impl Postgress {
             performers: ActiveValue::Set(progect.data.performers),
             date_start: ActiveValue::Set(progect.data.date_start.naive_utc()),
             date_end: ActiveValue::Set(progect.data.date_end.naive_utc()),
+            name_project: ActiveValue::Set(progect.data.name_project),
+            priority: ActiveValue::Set(progect.data.priority),
         };
 
         _ = entries::Progects::insert(model).exec(&self.db).await?;
@@ -188,6 +190,8 @@ impl Postgress {
             performers: ActiveValue::Set(progect.data.performers),
             date_start: ActiveValue::Set(progect.data.date_start.naive_utc()),
             date_end: ActiveValue::Set(progect.data.date_end.naive_utc()),
+            name_project: ActiveValue::Set(progect.data.name_project),
+            priority: ActiveValue::Set(progect.data.priority),
         };
 
         _ = entries::Progects::update(model).exec(&self.db).await?;

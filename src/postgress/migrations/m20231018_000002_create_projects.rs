@@ -16,6 +16,7 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(Projects::Table)
                     .col(ColumnDef::new(Projects::Id).uuid().not_null().primary_key())
+                    .col(ColumnDef::new(Projects::NameProject).string())
                     .col(ColumnDef::new(Projects::NameCustomer).string())
                     .col(ColumnDef::new(Projects::NamePerformer).string())
                     .col(
@@ -41,6 +42,7 @@ impl MigrationTrait for Migration {
                             .not_null()
                             .extra("DEFAULT CURRENT_TIMESTAMP".to_owned()),
                     )
+                    .col(ColumnDef::new(Projects::Priority).integer())
                     .to_owned(),
             )
             .await
@@ -57,6 +59,8 @@ impl MigrationTrait for Migration {
 pub enum Projects {
     Table,
     Id,
+    NameProject,
+    Priority,
     NameCustomer,
     NamePerformer,
     EmployeeId,

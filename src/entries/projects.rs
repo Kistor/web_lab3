@@ -13,11 +13,14 @@ pub struct Project {
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProjectData {
+    pub name_project: String,
     pub name_customer: String,
     pub name_performer: String,
     pub employee_id: Vec<Uuid>,
     pub employee_lid_id: Vec<Uuid>,
     pub performers: Uuid,
+
+    pub priority: i32,
     #[serde(with = "ts_milliseconds")]
     pub date_start: DateTime<Utc>,
     #[serde(with = "ts_milliseconds")]

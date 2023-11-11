@@ -7,6 +7,8 @@ use sea_orm::entity::prelude::*;
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: Uuid,
+    pub name_project: String,
+    pub priority: i32,
     pub name_customer: String,
     pub name_performer: String,
     pub employee_id: Vec<Uuid>,
@@ -26,6 +28,8 @@ impl From<Model> for Project {
         Self {
             id: value.id,
             data: ProjectData {
+                name_project: value.name_project,
+                priority: value.priority,
                 name_customer: value.name_customer,
                 name_performer: value.name_performer,
                 employee_id: value.employee_id,
