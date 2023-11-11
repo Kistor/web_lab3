@@ -12,7 +12,7 @@ pub fn router() -> Router {
 
     let cors = CorsLayer::new()
         // allow `GET` and `POST` when accessing the resource
-        .allow_methods([Method::GET, Method::POST])
+        .allow_methods([Method::GET, Method::POST, Method::PATCH, Method::DELETE])
         // allow requests from any origin
         .allow_origin(Any)
         .allow_headers([CONTENT_TYPE]);
