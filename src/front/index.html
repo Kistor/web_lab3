@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="master.css">
+  <title>Задание 1</title>
+</head>
+
+<body>
+  <header>
+    <div class="btnMenuContainer">
+      <button
+        onclick="createTableHeaders(projectsPageTableHeaders, 'Проекты', 1); isFilterPopupDisplay = true; getAllProjects()"
+        class="standardButton pointer" type="button" id="projectsBtn">Проекты</button>
+      <button
+        onclick="createTableHeaders(employersPageTableHeaders, 'Сотрудники', 0); isFilterPopupDisplay = false; getAllEmployers()"
+        class="standardButton pointer" type="button" id="employersBtn">Сотрудники</button>
+    </div>
+  </header>
+
+  <div class="panelContainer">
+    <h1 id="headerText">Проекты</h1>
+    <div class="btnPanelContainer">
+      <div onclick="showPopup()" class="btnFilterContainer pointer">
+        <img src="buttonFilter.svg" alt="">
+      </div>
+      <button class="standardButton pointer" type="button" id="createBtn">Создать</button>
+    </div>
+  </div>
+
+  <div class="tableConteiner">
+    <div id="mainTable" class="table">
+      <div class="tableColgroup">
+        <div class="tableCol" style="width: 10%"></div>
+        <div class="tableCol" style="width: 30%"></div>
+        <div class="tableCol" style="width: 30%"></div>
+        <div class="tableCol" style="width: 30%"></div>
+      </div>
+      <div class="tableThead">
+        <div id="tableHeadContainer" class="tableTr">
+        </div>
+      </div>
+      <div id="tableBodyContainer" class="tableTbody">
+      </div>
+    </div>
+  </div>
+
+  <div onclick="hideProjectsForm(); hideEmployersForm(); hidePopup()" id="faider"></div>
+
+  <div class="formContainer" id="projectsFormContainer">
+    <form name="formForCreateProject" id="formForCreateProject" method="post">
+      <div class="creationFormHeader">
+        <div class="headingLeft">
+          <div onclick="hideProjectsForm()" class="pointer btnCloseFormDiv" id="btnCloseForm">
+            <img src="arrowLeft.svg">
+          </div>
+          <h2 id="projectsFormHeader">Создать запись</h2>
+        </div>
+        <div class="headingRight">
+          <button class="standardButton pointer" type="button" class="saveBtn" id="saveBtnProjects">Сохранить</button>
+          <button class="dangerButton pointer" type="button" class="deleteBtn" id="deleteBtnProjects">Удалить</button>
+        </div>
+      </div>
+
+      <div class="formBodyContainer">
+        <div class="exForm">
+          <div class="projectsFormRow">
+            <div class="inputContainer">
+              <label for="projectName">Название проекта</label>
+              <input class="pointer" type="text" id="projectName" name="projectName" required>
+            </div>
+            <div class="inputContainer">
+              <label for="projectPriority">Приоритет проекта</label>
+              <input class="pointer" type="text" id="projectPriority" name="projectPriority" required>
+            </div>
+            <div class="inputContainer">
+              <label for="projectManager">Руководитель проекта</label>
+              <select name="projectManager" id="projectNameSelect" required>
+              </select>
+            </div>
+          </div>
+          <div class="projectsFormRow">
+            <div class="inputContainer">
+              <label for="projectCompanyClient">Название компании-заказчика</label>
+              <input class="pointer" type="text" id="projectCompanyClient" name="projectCompanyClient" required>
+            </div>
+            <div class="inputContainer">
+              <label for="projectCompanyContractor">Название компании-исполнителя</label>
+              <input class="pointer" type="text" id="projectCompanyContractor" name="projectCompanyContractor" required>
+            </div>
+          </div>
+          <div class="projectsFormRow">
+            <div class="inputContainer">
+              <label for="projectDateStart">Дата начала проекта</label>
+              <input class="pointer" type="date" id="projectDateStart" name="projectDateStart" required>
+            </div>
+            <div class="inputContainer">
+              <label for="projectDateEnd">Дата окончания проекта</label>
+              <input class="pointer" type="date" id="projectDateEnd" name="projectDateEnd" required>
+            </div>
+          </div>
+          <div class="projectsFormRow">
+
+            <div id="checkboxListContainer" class="checkboxListContainer">
+              <p>Исполнители</p>
+            </div>
+          </div>
+
+        </div>
+    </form>
+  </div>
+  </div>
+
+  <div class="formContainer" id="employersFormContainer">
+    <form name="formForCreateEmployer" id="formForCreateEmployer" method="post">
+      <div class="creationFormHeader">
+        <div class="headingLeft">
+          <div onclick="hideEmployersForm()" class="pointer btnCloseFormDiv" id="btnCloseForm">
+            <img src="arrowLeft.svg">
+          </div>
+          <h2 id="employersFormHeader">Создать запись</h2>
+        </div>
+        <div class="headingRight">
+          <button class="standardButton pointer" type="button" class="saveBtn" id="saveBtnEmployers">Сохранить</button>
+          <button class="dangerButton pointer" type="button" class="deleteBtn" id="deleteBtnEmployers">Удалить</button>
+        </div>
+      </div>
+
+      <div class="formBodyContainer">
+        <div class="exForm">
+          <div class="projectsFormRow">
+            <div class="inputContainer">
+              <label for="employerSurname">Фамилия</label>
+              <input class="pointer" type="text" id="employerSurname" name="employerSurname" required>
+            </div>
+            <div class="inputContainer">
+              <label for="employerName">Имя</label>
+              <input class="pointer" type="text" id="employerName" name="employerName" required>
+            </div>
+            <div class="inputContainer">
+              <label for="employerSeconName">Отчество</label>
+              <input class="pointer" type="text" id="employerSeconName" name="employerSeconName" required>
+            </div>
+          </div>
+          <div class="projectsFormRow">
+            <div class="inputContainer">
+              <label for="employerEmail">Email</label>
+              <input class="pointer" type="email" id="employerEmail" name="employerEmail" required>
+            </div>
+            <div class="inputContainer">
+              <label for="isProjectManager">Является руководителем</label>
+              <select name="isProjectManager" id="isProjectManagerSelect" required>
+                <option value="true">Да</option>
+                <option value="false">Нет</option>
+              </select>
+            </div>
+          </div>
+        </div>
+    </form>
+  </div>
+  </div>
+  </div>
+
+  <div id="popupWrapper">
+    <div class="popup">
+      <div class="popupHeader">
+        <p>Параметры фильтрации</p>
+        <div onclick="hidePopup()" class="btnCloseContainer pointer">
+          <img src="buttonClose.svg" alt="">
+        </div>
+      </div>
+      <div class="popupContentContainer">
+        <div class="popupRow">
+          <p>Дата начала проекта</p>
+          <input type="date" name="" value="2023-10-23">
+        </div>
+        <div class="popupRow">
+          <p>Дата окончания проекта</p>
+          <input type="date" name="" value="2023-10-30">
+        </div>
+        <div class="popupRow">
+          <p>Приоритет</p>
+          <input type="text" name="" value="1">
+        </div>
+        <div class="popupRow popupFooter">
+          <button class="standardButton pointer" type="button">Фильтровать</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="structs.js"></script>
+  <script src="scripts.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,318 @@
+@font-face {
+  font-family: "Roboto";
+  src: url("Roboto.woff");
+}
+
+html {
+  font-family: "Roboto"
+}
+
+header {
+  width: 100%;
+  background-color: #1e202f;
+  height: 56px;
+  display: flex;
+  align-items: center;
+}
+
+body {
+  margin: 0;
+  background-color: #f8f8f8;
+}
+
+button {
+  padding: 8px 16px;
+  border: none;
+  margin: 0 8px;
+  color: white;
+  font-size: 14px;
+  border-radius: 2px
+}
+
+h1 {
+  font-size: 24px
+}
+
+h2 {
+  font-size: 20px
+}
+
+div {
+  display: flex;
+}
+
+p {
+  margin: 0
+}
+
+input, select {
+  background-color: #fff;
+  border: 1px solid #f0f0f0;
+  padding: 8px;
+  font-size: 14px
+}
+
+select {
+  padding: 7px 0 7px 4px;
+}
+
+label {
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  margin: 0;
+  margin-right: 8px
+}
+
+form, .exForm {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.panelContainer {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.btnMenuContainer {
+  margin-left: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.standardButton {
+  background-color: #1890ff;
+  color: #fff;
+  border: none;
+}
+
+.dangerButton {
+  background-color: #ff4d4f;
+  border: none;
+  color: #fff;
+}
+
+.disableButton {
+  background-color: #f5f5f5;
+  border: 1px solid #d9d9d9;
+  color: gray;
+}
+
+.panelContainer {
+  background-color: #fff
+}
+
+.btnFilterContainer {
+  height: 32px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+/* Таблица */
+
+.tableConteiner {
+    margin: 22px 24px
+}
+
+.table {
+	display: table;
+	width: 100%;
+	box-sizing: border-box;
+	border-collapse: collapse;
+	border: 1px solid #f0f0f0;
+	empty-cells: show;
+  font-size: 14px
+}
+.tableColgroup {
+	display: tableColumn-group;
+}
+.tableCol {
+	display: tableColumn;
+}
+.tableThead {
+	display: table-header-group;
+}
+.tableTbody {
+	display: table-row-group;
+}
+.tableTr {
+	display: table-row;
+  cursor: pointer;
+}
+.tableTh {
+	display: table-cell;
+	padding: 16px;
+	border: 1px solid #f0f0f0;
+	text-align: left;
+  vertical-align: middle;
+}
+.tableTd {
+	display: table-cell;
+	padding: 16px;
+	border: 1px solid #f0f0f0;
+}
+.tableThead .tableTh, .tableThead .tableTd {
+  font-weight: bold;
+  cursor: pointer;
+}
+.tableTbody .tableTh, .tableTbody .tableTd {
+	background: #fff;
+}
+
+.sorter {
+  padding: 0;
+  margin: 0
+}
+
+#faider {
+  display: none;
+  height: 100%;
+  width: 100%;
+  background-color: #000;
+  opacity: 0.5;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+}
+
+/* Всплывающее окно  */
+#popupWrapper {
+  display: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup {
+  width: 50%;
+  background-color: #fff;
+  flex-direction: column;
+  border-radius: 5px;
+  max-width: 624px;
+  z-index: 2;
+}
+.popupHeader {
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid #f0f0f0
+}
+.popupHeader p {
+  font-weight: bold;
+}
+.popupContentContainer {
+  padding: 0 24px;
+  flex-direction: column;
+}
+.popupRow {
+  flex-direction: column;
+  width: 100%;
+  padding: 12px 0
+}
+
+.popupRow p {
+  margin-bottom: 8px
+}
+
+.popupFooter {
+  justify-content: flex-end;
+  flex-direction: row;
+  margin: 12px 0;
+}
+
+.popupFooter button {
+  max-width: 130px
+}
+
+/* Форма для создания / редактирования проектов  */
+.formContainer {
+  height: 100%;
+  width: 50%;
+  z-index: 2;
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  right: 0;
+  flex-direction: column;
+}
+#projectsFormContainer, #employersFormContainer {
+  display: none;
+}
+
+.creationFormHeader {
+  max-height: 72px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-right: 16px;
+  border-bottom: 1px solid #f0f0f0
+}
+
+.creationFormHeader .headingLeft {
+  align-items: center;
+}
+
+.btnCloseFormDiv {
+  width: 16px;
+  height: 16px;
+  padding: 24px
+}
+
+.inputContainer {
+  flex-direction: column;
+  font-size: 14px;
+  width: 50%;
+}
+
+.inputContainer:nth-child(2), .inputContainer:nth-child(3) {
+  margin-left: 16px
+}
+
+.formBodyContainer {
+  margin: 16px 24px
+}
+
+.inputContainer label {
+  margin-bottom: 8px;
+}
+
+.inputContainer label::before {
+  content: "* ";
+  color: #FF4D4F;
+}
+
+.projectsFormRow {
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 24px
+}
+
+.checkboxListContainer {
+  flex-direction: column;
+}
+
+.checkboxRowContainer {
+  margin-top: 14px
+}
+
+#deleteBtn {
+  display: none;
+}
+
+.headingRight {
+  margin-right: 16px
+}
+
+/* Форма для создания / редактирования сотрудников  */
+#employersFormContainer {
+
+}
