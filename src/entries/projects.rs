@@ -1,8 +1,9 @@
 use ::serde::{Deserialize, Serialize};
 use chrono::{serde::ts_milliseconds, DateTime, Utc};
+use utoipa::ToSchema;
 use uuid::Uuid;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Project {
     pub id: Uuid,
@@ -10,7 +11,7 @@ pub struct Project {
     pub data: ProjectData,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ProjectData {
     pub name_project: String,

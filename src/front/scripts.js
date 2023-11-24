@@ -512,7 +512,14 @@ async function getAllProjects() {
 
   let url = new URL(baseUrl + '/projects');
 
+
+
   xhr.open('GET', url);
+  xhr.setRequestHeader("Accept", "application/json");
+  xhr.setRequestHeader("Content-Type", "application/json");
+
+
+
 
   xhr.onload = () => {
     if (xhr.status == 200) {

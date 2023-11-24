@@ -11,7 +11,8 @@ use sea_orm::QueryTrait;
 use sea_orm::TransactionTrait;
 use sea_orm::{Database, DatabaseConnection, EntityTrait};
 use sea_orm_migration::MigratorTrait;
-use sea_query::Expr;
+use sea_query::extension::postgres::PgExpr;
+use sea_query::{Condition, Expr};
 use uuid::Uuid;
 
 use self::migrator::Migrator;
@@ -96,13 +97,26 @@ impl Postgress {
         Ok(employees)
     }
 
-    pub async fn get_all_projects(&self) -> Result<Vec<Project>> {
-        let progects: Vec<Project> = entries::Progects::find()
+    pub async fn get_all_projects(&self, search_string: Option<String>) -> Result<Vec<Project>> {
+        let mut select = entries::Progects::find();
+
+        if let Some(search_string) = search_string {
+            select = select.filter(
+                Condition::any().add(
+                    Expr::col(entries::progects::Column::NameProject)
+                        .ilike(format!("%{search_string}%")),
+                ),
+            )
+        }
+
+        let progects: Vec<Project> = select
+            .clone()
             .all(&self.db)
             .await?
             .into_iter()
             .map(|model| model.into())
             .collect();
+
         Ok(progects)
     }
 
